@@ -1,4 +1,4 @@
-service: notes-app-api
+service: aws-serverless-boilerpate
 
 plugins:
       - serverless-webpack
@@ -12,7 +12,7 @@ custom:
 provider:
       name: aws
       runtime: nodejs8.10
-      stage: prod
+      stage: dev
       region: us-east-1
       iamRoleStatements:
             - Effect: Allow
@@ -28,7 +28,7 @@ provider:
 
 functions:
       get:
-            handler: get.main
+            handler: lambda/get.main
             events:
                   - http:
                         cors: true
@@ -36,7 +36,7 @@ functions:
                         method: get
                         authorizer: aws_iam
       list:
-            handler: list.main
+            handler: lambda/list.main
             events:
                   - http:
                         cors: true
@@ -44,7 +44,7 @@ functions:
                         method: get
                         authorizer: aws_iam
       update:
-            handler: update.main
+            handler: lambda/update.main
             events:
                   - http:
                         cors: true
@@ -52,7 +52,7 @@ functions:
                         method: put
                         authorizer: aws_iam
       delete:
-            handler: delete.main
+            handler: lambda/delete.main
             events:
                   - http:
                         cors: true
