@@ -5,6 +5,11 @@ plugins:
       - serverless-offline
 
 custom:
+      stage: ${opt:stage, self:provider.stage}
+      tableThroughputs:
+            prod: 5
+            default: 1
+      tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
       webpack:
             webpackConfig: ./webpack.config.js
             includeModules: true
@@ -14,6 +19,9 @@ provider:
       runtime: nodejs8.10
       stage: dev
       region: us-east-1
+      environment:
+            tableName:
+                  Ref: ItemsTable
       iamRoleStatements:
             - Effect: Allow
               Action:
@@ -24,7 +32,8 @@ provider:
                   - dynamodb:PutItem
                   - dynamodb:UpdateItem
                   - dynamodb:DeleteItem
-              Resource: "arn:aws:dynamodb:us-east-1:*:*"
+              Resource:
+                  - "Fn::GetAtt": [ ItemsTable, Arn ]
 
 functions:
       get:
@@ -36,7 +45,7 @@ functions:
                         method: get
                         authorizer: aws_iam
       list:
-            handler: lambda/list.main
+            handler: - ${file(resources/dynamodb-table.yml)}lambda/list.main
             events:
                   - http:
                         cors: true
@@ -67,3 +76,7 @@ functions:
                         path: notes
                         method: post
                         authorizer: aws_iam
+
+resources:
+      # DynamoDB
+      - ${file(resources/dynamodb-table.yml)}
