@@ -4,7 +4,7 @@ logs
 npm-debug.log*
 
 # Credentials
-credentials
+credentials.js
 
 # Runtime data
 pids
