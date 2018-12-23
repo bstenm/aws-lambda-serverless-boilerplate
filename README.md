@@ -2,4 +2,4 @@
 
 Work in progress
 
-Serverless starter with support for ES6 syntax, testing with Jest, DynamoDB and AWS Lambda.
+Serverless starter with support for ES6 syntax, testing with Jest, linting with ESLint, continuous integration with TravisCI, DynamoDB as database and AWS Lambda.
